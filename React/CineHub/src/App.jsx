@@ -1,20 +1,24 @@
-import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Header from "./components/Header";
-import LoginForm from "./pages/Login/Login";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login/loginpage.jsx";
+import Register from "./pages/Register/registerpage.jsx";
+import Home from "./pages/Home/homepage.jsx";
+import OrdersPage from "./pages/Orders/orderspage.jsx";
+import MovieDetailPage from "./pages/Movie_Detail/movies_detail_page.jsx";
+import OrderHistoryPage from "./pages/Order_History/order_history_page.jsx";
 
-function App() {
+
+export default function App() {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<LoginForm />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/orders" element={<OrdersPage />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/movie/:id" element={<MovieDetailPage />} />
+      <Route path="/order-history" element={<OrderHistoryPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
-
-export default App;
