@@ -8,36 +8,17 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    setMsg("");
-  
-    try {
-      const response = await fetch("http://localhost:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
-      });
-  
-      const result = await response.json();
-  
-      if (response.ok) {
-        setMsg("Login successful!");
-  
-        // Save user info or JWT token
-        localStorage.setItem("user", JSON.stringify(result.user));
-  
-        setTimeout(() => {
-          navigate("/home");
-        }, 500);
-      } else {
-        setMsg(result.message || "Login failed");
-      }
-  
-    } catch (err) {
-      setMsg("Server error, try again later.");
+
+    // Simple validation (you can replace this with real auth)
+    if (email === "user@example.com" && password === "password123") {
+      setMsg("Login successful!");
+      setTimeout(() => {
+        navigate("/home"); // Redirect to homepage
+      }, 500);
+    } else {
+      setMsg("Invalid email or password.");
     }
   }
 
