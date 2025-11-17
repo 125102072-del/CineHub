@@ -13,7 +13,7 @@ export default function Login() {
     setMsg("");
   
     try {
-      const response = await fetch("http://localhost:8000/api/auth/login", {
+      const response = await fetch("http://localhost:8000/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -23,10 +23,10 @@ export default function Login() {
   
       if (response.ok) {
         setMsg("Login successful!");
-        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem("user", JSON.stringify(result.data));
         navigate("/home");
       } else {
-        setMsg(result.message);
+        setMsg(result.error);
       }
     } catch (err) {
       setMsg("Server error");
