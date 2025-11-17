@@ -1,12 +1,15 @@
 const express = require("express");
-const authRoutes = require("./routers/authRoutes");
-require("dotenv").config();
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
+
+dotenv.config();
+connectDB(); // Connect MongoDB
 
 const app = express();
-
 app.use(express.json());
-app.use("/", authRoutes);
 
-app.listen(process.env.PORT, () => {
-  console.log(`App is listening at port ${process.env.PORT}`);
+app.use("/", require("./routers/authRoutes")); // your routes
+
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
 });

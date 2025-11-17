@@ -1,6 +1,27 @@
+const Customer = require("../models/Customer");
 
 const login = async (requestBody) => {
-    // logic for login
+
+    const { email, password } = requestBody;
+    if (!email || !password) {
+      throw new Error("Email and password are required");
+    }
+    const customer = await Customer.findOne({ email });
+    if (!customer) {
+      throw new Error("Email does not exist");
+    }
+    if (customer.password !== password) {
+      throw new Error("Incorrect password");
+    }
+    return {
+      message: "Login successful",
+      data: {
+        id: customer.customer_id,
+        username: customer.username,
+        email: customer.email,
+        phone_number: customer.phone_number
+      }
+    };
   };
   
 
