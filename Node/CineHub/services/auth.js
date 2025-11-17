@@ -1,3 +1,4 @@
+const Customer = require("../models/Customer");
 
 const login = async (requestBody) => {
 
@@ -15,7 +16,7 @@ const login = async (requestBody) => {
     return {
       message: "Login successful",
       data: {
-        id: customer._id,
+        id: customer.customer_id,
         username: customer.username,
         email: customer.email,
         phone_number: customer.phone_number
