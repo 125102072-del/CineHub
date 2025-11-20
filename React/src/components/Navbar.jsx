@@ -1,22 +1,138 @@
-export default function Navbar() {
+import React, { useEffect, useRef, useState } from "react";
+
+export default function Navbar({
+    query,
+    onQueryChange,
+    locationText,
+    onLocationChange,
+    onLocationEnter,
+    onLogoClick,
+    user,
+}) {
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const userBtnRef = useRef(null);
+    const userMenuRef = useRef(null);
+
+    useEffect(() => {
+        function onDocClick(e) {
+            if (
+                userMenuOpen &&
+                userMenuRef.current &&
+                !userMenuRef.current.contains(e.target) &&
+                userBtnRef.current &&
+                !userBtnRef.current.contains(e.target)
+            ) {
+                setUserMenuOpen(false);
+            }
+        }
+        function onKey(e) {
+            if (e.key === "Escape") setUserMenuOpen(false);
+        }
+        document.addEventListener("mousedown", onDocClick);
+        document.addEventListener("keydown", onKey);
+        return () => {
+            document.removeEventListener("mousedown", onDocClick);
+            document.removeEventListener("keydown", onKey);
+        };
+    }, [userMenuOpen]);
+
     return (
-        <nav className="navbar">
-            <div className="container navbar-inner">
-                <strong style={{ fontSize: 20 }}>CineHub</strong>
+        <header className="topbar">
+            <button
+                type="button"
+                className="brand clicky"
+                onClick={onLogoClick}
+                title="Go home"
+            >
+                <span className="logo">
+                    CIN<span>&</span>HUB
+                </span>
+            </button>
 
-                <div className="pill">
-                    <span>📍</span>
-                    <span>Location: Dublin Central</span>
-                </div>
-
-                <div className="nav-spacer" />
-
-                <div className="nav-links">
-                    <a href="#">Movies</a>
-                    <a href="#">Login</a>
-                    <a href="#">Admin</a>
-                </div>
+            <div className="location-pill">
+                <input
+                    className="location-input"
+                    placeholder="Type a place…"
+                    value={locationText}
+                    onChange={(e) => onLocationChange?.(e.target.value)}
+                    onKeyDown={onLocationEnter}
+                />
             </div>
-        </nav>
+
+            <div className="search-wrap">
+                <input
+                    className="search-input"
+                    placeholder="Search movies"
+                    value={query}
+                    onChange={(e) => onQueryChange?.(e.target.value)}
+                />
+                <button type="button" className="btn primary">
+                    Explore
+                </button>
+            </div>
+
+            <div className="user-wrap">
+                <button type="button" className="link">
+                    Logout
+                </button>
+
+                <button
+                    type="button"
+                    ref={userBtnRef}
+                    className="avatar-btn"
+                    aria-haspopup="menu"
+                    aria-expanded={userMenuOpen}
+                    onClick={() => setUserMenuOpen((v) => !v)}
+                    title="Account menu"
+                >
+                    <img
+                        src={user.photo}
+                        alt={user.name}
+                        className="avatar-img"
+                        draggable="false"
+                    />
+                </button>
+
+                {userMenuOpen && (
+                    <div
+                        ref={userMenuRef}
+                        className="user-menu"
+                        role="menu"
+                        aria-label="Account"
+                    >
+                        <div className="user-menu__header">
+                            <img
+                                src={user.photo}
+                                alt={user.name}
+                                className="avatar avatar--sm"
+                            />
+                            <div>
+                                <div className="um-name">{user.name}</div>
+                                <div className="um-email">{user.email}</div>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            className="menu-item"
+                            role="menuitem"
+                            onClick={() => (window.location.href = "/order-history")}
+                        >
+                            Order history
+                        </button>
+                        <button type="button" className="menu-item" role="menuitem">
+                            Account settings
+                        </button>
+                        <div className="menu-sep" />
+                        <button
+                            type="button"
+                            className="menu-item danger"
+                            role="menuitem"
+                        >
+                            Sign out
+                        </button>
+                    </div>
+                )}
+            </div>
+        </header>
     );
 }

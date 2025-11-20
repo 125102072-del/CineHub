@@ -1,13 +1,22 @@
-import MovieCard from "./MovieCard.jsx";
+import React from "react";
+import MovieCard from "./MovieCard";
 
-export default function MovieGrid({ items }) {
+export default function MovieGrid({ movies }) {
+    const hasMovies = movies && movies.length > 0;
+
+    if (!hasMovies) {
+        return (
+            <main className="grid-wrap">
+                <div className="empty-state">No movies found.</div>
+            </main>
+        );
+    }
+
     return (
-        <div className="container">
-            <div className="grid">
-                {items.map((m) => (
-                    <MovieCard key={m.id} movie={m} />
-                ))}
-            </div>
-        </div>
+        <main className="grid-wrap">
+            {movies.map((m) => (
+                <MovieCard key={m.id} movie={m} />
+            ))}
+        </main>
     );
 }
