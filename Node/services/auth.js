@@ -27,6 +27,37 @@ const login = async (requestBody) => {
 
   const register = async ({ userId, username, password }) => {
     // logic to registerif (!password || !username) {
-  };
+
+    const {email,phone_number,age} = userId;
+
+
+    const checkCustomer = await Customer.findOne({ email });
+      if (checkCustomer) {
+      throw new Error("Account already exists");
+    }
+
+      const customer_id = Math.floor(Math.random()*50) + 1;
+
+      const newCustomer = await Customer.create({
+  customer_id,
+  username,
+  email,
+  phone_number,
+  profile_photo: "",
+  age,
+  password,
+  created_at: new Date()
+  }
+);
+
+return {
+data: {
+id: newCustomer.customer_id,
+username: newCustomer.username,
+email: newCustomer.email,
+phone_number: newCustomer.phone_number
+}
+};
+}
   
 module.exports = { login, register };
