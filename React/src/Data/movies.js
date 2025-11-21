@@ -1,6 +1,6 @@
 export const movies = [
     {
-        id: "1",
+        id: "11",
         title: "Peaky Blinders",
         badge: "PG-13",
         genres: ["Sci-Fi", "Adventure"],
@@ -11,7 +11,7 @@ export const movies = [
         times: ["12:15", "15:00", "18:30", "21:15"],
     },
     {
-        id: "2",
+        id: "12",
         title: "Deadpool vs Wolverine",
         badge: "R",
         genres: ["Action", "Crime"],
@@ -22,7 +22,7 @@ export const movies = [
         times: ["12:15", "17:20", "20:05"],
     },
     {
-        id: "3",
+        id: "13",
         title: "Don't Look Up",
         badge: "PG-13",
         genres: ["Thriller"],
@@ -33,7 +33,7 @@ export const movies = [
         times: ["14:15", "17:20", "20:05"],
     },
     {
-        id: "4",
+        id: "14",
         title: "The Black Book",
         badge: "G",
         genres: ["Romance", "Drama"],

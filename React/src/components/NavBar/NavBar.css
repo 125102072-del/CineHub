@@ -1,0 +1,5 @@
+.logo-img {
+    height: 42px;     /* adjust as needed */
+    object-fit: contain;
+    pointer-events: none;
+  }
