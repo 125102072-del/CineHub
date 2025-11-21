@@ -1,33 +1,38 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 export default function MovieCard({ movie }) {
-  const { title, cert, genres, runtime, rating, times } = movie;
+  const { id, poster, badge, title, rating, genres, duration, times } = movie;
 
   return (
-    <div className="movie-card card">
-      {/* Top strip (poster placeholder) */}
-      <div className="movie-poster" />
-
-      {/* Certification badge */}
-      <div className="movie-row">
-        <span className="badge">{cert}</span>
-        <span className="rating">{rating.toFixed(1)}</span>
+    <Link to={`/movie/${id}`} className="movie-card link-reset">
+      <div
+        className="poster"
+        style={{ backgroundImage: `url(${poster})` }}
+      >
+        {badge && <span className="badge">{badge}</span>}
       </div>
 
-      {/* Title */}
-      <div className="movie-title">{title}</div>
+      <div className="card-body">
+        <div className="title-row">
+          <h4 className="title">{title}</h4>
+          <span className="rating">{rating?.toFixed?.(1) ?? "—"}</span>
+        </div>
 
-      {/* Meta */}
-      <div className="movie-meta">
-        {genres.join(" • ")} • {runtime}m
-      </div>
+        <div className="meta">
+          <span>{(genres ?? []).join(" • ")}</span>
+          <span className="dot">•</span>
+          <span>{duration ?? "—"}</span>
+        </div>
 
-      {/* Times */}
-      <div className="time-row">
-        {times.map((t) => (
-          <span className="chip" key={t}>
-            {t}
-          </span>
-        ))}
+        <div className="times">
+          {(times ?? []).map((t) => (
+            <span key={t} className="chip">
+              {t}
+            </span>
+          ))}
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,11 +1,28 @@
 import React from "react";
+import Navbar from "./Navbar";
+import SearchHero from "./SearchHero";
 
-function Header() {
+export default function Header({
+  query,
+  onQueryChange,
+  locationText,
+  onLocationChange,
+  onLocationEnter,
+  onLogoClick,
+  user,
+}) {
   return (
-    <header style={{ background: "#282c34", padding: "10px", color: "white" }}>
-      <h1>Welcome to My React App</h1>
-    </header>
+    <>
+      <Navbar
+        query={query}
+        onQueryChange={onQueryChange}
+        locationText={locationText}
+        onLocationChange={onLocationChange}
+        onLocationEnter={onLocationEnter}
+        onLogoClick={onLogoClick}
+        user={user}
+      />
+      <SearchHero locationText={locationText} />
+    </>
   );
 }
-
-export default Header;
