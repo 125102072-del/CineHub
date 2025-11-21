@@ -27,7 +27,7 @@ export default function MovieDetailPage() {
   });
 
   const [selectedDate, setSelectedDate] = useState(dateOptions[1]?.key ?? "");
-  const [selectedShow, setSelectedShow] = useState(movieTimes[2] ?? null);
+  const [selectedShow, setSelectedShow] = useState(null); // updated
 
   const theatres = theatresData;
 
@@ -51,18 +51,19 @@ export default function MovieDetailPage() {
     async function fetchTheatres() {
       try {
         setLoadingTheatres(true);
-  
+
         // Format yyyy-mm-dd -> dd-mm-yyyy for backend
         const dd = selectedDate.slice(8, 10);
         const mm = selectedDate.slice(5, 7);
         const yyyy = selectedDate.slice(0, 4);
         const formattedDate = `${dd}-${mm}-${yyyy}`;
-  
+
         const res = await fetch(
           `http://localhost:8000/theatres/${id}?show_date=${formattedDate}`
         );
         const json = await res.json();
         setTheatresData(json.data || []);
+        setSelectedShow(null); // reset selected show when date changes
       } catch (err) {
         console.error("Error loading theatres", err);
         setTheatresData([]);
@@ -70,10 +71,20 @@ export default function MovieDetailPage() {
         setLoadingTheatres(false);
       }
     }
-  
+
     fetchTheatres();
   }, [id, selectedDate]);
-  
+
+  function handleBookTickets() {
+    if (!selectedShow) return;
+
+    navigate(`/movie/${id}/seats`, {
+      state: {
+        showtime: selectedShow,      // selected time
+        selectedDate                 // chosen date
+      }
+    });
+  }
 
   return (
     <div className="md-root">
@@ -141,45 +152,51 @@ export default function MovieDetailPage() {
             <p className="md-hint">Choose a theatre and time slot. Then tap Book Tickets.</p>
 
             {loadingTheatres ? (
-                <p>Loading theatres…</p>
+              <p>Loading theatres…</p>
             ) : theatres.length === 0 ? (
-                <p>No shows available on this date.</p>
+              <p>No shows available on this date.</p>
             ) : (
-                <div className="theatre-list">
+              <div className="theatre-list">
                 {theatres.map((t) => (
-                    <div key={t.theatre_id} className="theatre-card">
+                  <div key={t.theatre_id} className="theatre-card">
                     <div className="th-left">
-                        <div className="th-name">{t.name}</div>
-                        <div className="th-addr">{t.address} • {t.city}</div>
+                      <div className="th-name">{t.name}</div>
+                      <div className="th-addr">{t.address} • {t.city}</div>
                     </div>
 
                     <div className="th-times">
-                        {t.showtimes.map((st) =>
-                            st.start_time.map((slot) => (
-                            <button
-                                key={`${t.theatre_id}-${st.showtime_id}-${slot}`}
-                                className={`slot ${selectedShow === slot ? "active" : ""}`}
-                                onClick={() => setSelectedShow(slot)}
-                            >
-                                {slot}
-                            </button>
-                            ))
-                        )}
+                      {t.showtimes.map((st) =>
+                        st.start_time.map((slot) => (
+                          <button
+                            key={`${t.theatre_id}-${st.showtime_id}-${slot}`}
+                            className={`slot ${selectedShow === slot ? "active" : ""}`}
+                            onClick={() => setSelectedShow(slot)}
+                          >
+                            {slot}
+                          </button>
+                        ))
+                      )}
                     </div>
 
                     <div className="th-actions">
-                        <button className="btn ghost">F&B</button>
-                        <button className="btn ghost">Parking</button>
+                      <button className="btn ghost">F&B</button>
+                      <button className="btn ghost">Parking</button>
                     </div>
-                    </div>
+                  </div>
                 ))}
-                </div>
+              </div>
             )}
-        </section>
+          </section>
 
 
           <footer className="md-footer">
-            <button className="btn cta">Book Tickets →</button>
+            <button
+              className="btn cta"
+              onClick={handleBookTickets}
+              disabled={!selectedShow}
+            >
+              Book Tickets →
+            </button>
           </footer>
         </>
       )}
