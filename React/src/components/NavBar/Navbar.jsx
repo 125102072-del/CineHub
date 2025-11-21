@@ -1,4 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import logo from "../../assets/cinehub-logo.png";
+import "./NavBar.css"
+
 
 export default function Navbar({
     query,
@@ -44,9 +47,7 @@ export default function Navbar({
                 onClick={onLogoClick}
                 title="Go home"
             >
-                <span className="logo">
-                    CIN<span>&</span>HUB
-                </span>
+                <img src={logo} alt="CINEHUB Logo" className="logo-img" />
             </button>
 
             <div className="location-pill">

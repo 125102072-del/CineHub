@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function MovieCard({ movie }) {
-  const { id, poster, badge, title, rating, genres, duration, times } = movie;
+  const { movie_id, poster, badge, name, rating, genre, duration, times } = movie;
 
   return (
-    <Link to={`/movie/${id}`} className="movie-card link-reset">
+    <Link to={`/movie/${movie_id}`} className="movie-card link-reset">
       <div
         className="poster"
         style={{ backgroundImage: `url(${poster})` }}
@@ -15,12 +15,12 @@ export default function MovieCard({ movie }) {
 
       <div className="card-body">
         <div className="title-row">
-          <h4 className="title">{title}</h4>
+          <h4 className="title">{name}</h4>
           <span className="rating">{rating?.toFixed?.(1) ?? "—"}</span>
         </div>
 
         <div className="meta">
-          <span>{(genres ?? []).join(" • ")}</span>
+          <span>{(genre ?? []).join(" • ")}</span>
           <span className="dot">•</span>
           <span>{duration ?? "—"}</span>
         </div>

@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require("./routers/authRoutes");
+const movieRoutes = require("./routers/movieRoutes");
+const theatreRoutes = require("./routers/theatreRoutes")
 const connectDB = require("./config/db");
 require("dotenv").config();
 
@@ -16,6 +18,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use("/", authRoutes);
+app.use("/", movieRoutes);
+app.use("/",theatreRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`App is listening at port ${process.env.PORT}`);
