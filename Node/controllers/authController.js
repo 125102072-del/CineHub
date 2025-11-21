@@ -18,7 +18,7 @@ const loginController = async (req, res, next) => {
 
 const registerController = async (req, res, next) => {
   try {
-  //  const response = await register(req.body);
+  const response = await register(req.body);
   const data = req.body;
     if (data)
       res
