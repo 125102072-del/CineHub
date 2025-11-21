@@ -1,11 +1,10 @@
-// src/pages/Seat_Selection/seat_selection_page.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./seat_selection_page.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { movies } from "../../data/movies";
 
 const ROWS = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
-const SEATS_PER_ROW = 14;
+const SEATS_PER_ROW = 11;
 const PRICE_PER_TICKET = 12.0;
 
 const BLOCKED_SEATS = new Set([
@@ -50,10 +49,9 @@ export default function SeatSelection() {
 
     const [selectedSeats, setSelectedSeats] = useState([]);
 
-    const movie = useMemo(
-        () => movies.find((m) => String(m.id) === String(movieId)) ?? movies[0],
-        [movieId]
-    );
+    const movie = useMemo(() => {
+        return movies.find((m) => String(m.id) === String(movieId)) || movies[0];
+    }, [movieId]);
 
     const activeDate = DATE_OPTIONS.find((d) => d.id === activeDateId);
 
@@ -74,11 +72,14 @@ export default function SeatSelection() {
                 setUserMenuOpen(false);
             }
         }
+
         function handleKey(e) {
             if (e.key === "Escape") setUserMenuOpen(false);
         }
+
         document.addEventListener("mousedown", handleClick);
         document.addEventListener("keydown", handleKey);
+
         return () => {
             document.removeEventListener("mousedown", handleClick);
             document.removeEventListener("keydown", handleKey);
@@ -103,7 +104,6 @@ export default function SeatSelection() {
         );
     }
 
-    // 🔴 THIS WAS alert(...) BEFORE
     function handleProceed() {
         if (!selectedSeats.length) return;
 
@@ -115,7 +115,7 @@ export default function SeatSelection() {
                 seats: selectedSeats,
                 pricePerTicket: PRICE_PER_TICKET,
                 total: totalPrice,
-                cinemaName: "CineHub Dublin Central", // adjust if needed
+                cinemaName: "CineHub Dublin Central",
             },
         });
     }
@@ -198,94 +198,9 @@ export default function SeatSelection() {
             </header>
 
             <div className="seat-page">
-                <section className="seat-movie-card">
-                    <div className="seat-movie-left">
-                        <div
-                            className="seat-movie-poster"
-                            style={{ backgroundImage: `url(${movie.poster})` }}
-                        />
-                    </div>
-
-                    <div className="seat-movie-right">
-                        <div className="crumbs">
-                            <span className="crumb-link" onClick={() => navigate("/")}>
-                                Home
-                            </span>{" "}
-                            ›{" "}
-                            <span className="crumb-link" onClick={() => navigate(-1)}>
-                                Movie
-                            </span>{" "}
-                            › <span className="crumb-current">{movie.title}</span>
-                        </div>
-
-                        <h1 className="seat-movie-title">{movie.title}</h1>
-
-                        <div className="seat-movie-meta">
-                            <span>⭐ {movie.rating?.toFixed?.(1) ?? "—"}</span>
-                            <span className="dot">•</span>
-                            <span>{movie.duration ?? "132m"}</span>
-                            <span className="dot">•</span>
-                            <span>{(movie.genres ?? []).join(", ") || "Sci-Fi"}</span>
-                            <span className="dot">•</span>
-                            <span>PG-13</span>
-                        </div>
-
-                        <p className="seat-movie-sub">
-                            {movie.description ||
-                                "Select your seats for this showtime. Choose your preferred row and seats, then proceed to confirm your booking."}
-                        </p>
-
-                        <div className="seat-pill-row">
-                            <button className="pill">IMAX</button>
-                            <button className="pill">Dolby</button>
-                            <button className="pill">English</button>
-                            <button className="pill">Subtitles</button>
-                        </div>
-
-                        <div className="seat-date-time">
-                            <div className="seat-date-block">
-                                <div className="label">Date</div>
-                                <div className="date-row">
-                                    {DATE_OPTIONS.map((d) => (
-                                        <button
-                                            key={d.id}
-                                            className={
-                                                "date-pill" +
-                                                (d.id === activeDateId ? " date-pill--active" : "")
-                                            }
-                                            onClick={() => setActiveDateId(d.id)}
-                                        >
-                                            {d.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="seat-time-block">
-                                <div className="label">Showtime</div>
-                                <div className="time-row">
-                                    {TIME_SLOTS.map((t) => (
-                                        <button
-                                            key={t}
-                                            className={
-                                                "time-pill" +
-                                                (t === activeTime ? " time-pill--active" : "")
-                                            }
-                                            onClick={() => setActiveTime(t)}
-                                        >
-                                            {t}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
                 <main className="seat-layout">
                     <section className="seat-map-card">
-                        <div className="screen-bar">SCREEN</div>
-
+                        <div className="screen-bar">    </div>
                         <div className="seat-grid">
                             <div className="seat-cell seat-cell--empty" />
                             {Array.from({ length: SEATS_PER_ROW }, (_, idx) => (
@@ -365,9 +280,7 @@ export default function SeatSelection() {
 
                         <div className="order-total-row">
                             <span className="order-label">Total:</span>
-                            <span className="order-total">
-                                €{totalPrice.toFixed(2)}
-                            </span>
+                            <span className="order-total">€{totalPrice.toFixed(2)}</span>
                         </div>
 
                         <button
