@@ -1,3 +1,4 @@
+// src/pages/Seat_Selection/seat_selection_page.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./seat_selection_page.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -102,13 +103,21 @@ export default function SeatSelection() {
         );
     }
 
+    // 🔴 THIS WAS alert(...) BEFORE
     function handleProceed() {
         if (!selectedSeats.length) return;
-        alert(
-            `Proceeding with seats: ${selectedSeats.join(
-                ", "
-            )} • Total: €${totalPrice.toFixed(2)}`
-        );
+
+        navigate("/order-summary", {
+            state: {
+                movieId: movie.id,
+                showtime: activeTime,
+                dateLabel: activeDate?.label || "",
+                seats: selectedSeats,
+                pricePerTicket: PRICE_PER_TICKET,
+                total: totalPrice,
+                cinemaName: "CineHub Dublin Central", // adjust if needed
+            },
+        });
     }
 
     return (
@@ -334,7 +343,7 @@ export default function SeatSelection() {
                         <div className="order-row">
                             <span className="order-label">Showtime:</span>
                             <span className="order-value">
-                                {activeDate?.label || "Wed, Oct 8, 2025"} • {activeTime}
+                                {activeDate?.label || "Wed, Oct 8"} • {activeTime}
                             </span>
                         </div>
 
@@ -371,26 +380,6 @@ export default function SeatSelection() {
                     </aside>
                 </main>
             </div>
-
-            <footer className="seat-footer">
-                <div className="seat-footer-inner">
-                    <div className="seat-footer-text">
-                        Selected:{" "}
-                        {selectedSeats.length
-                            ? selectedSeats.join(", ")
-                            : "No seats selected"}
-                        {" • "}
-                        Total: €{totalPrice.toFixed(2)}
-                    </div>
-                    <button
-                        className="btn primary seat-footer-btn"
-                        onClick={handleProceed}
-                        disabled={!selectedSeats.length}
-                    >
-                        Continue →
-                    </button>
-                </div>
-            </footer>
         </div>
     );
 }
