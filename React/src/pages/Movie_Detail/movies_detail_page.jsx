@@ -75,11 +75,15 @@ export default function MovieDetailPage() {
   function handleBookTickets() {
     if (!selectedShow) return;
 
+    const theatre = theatresData.find(th => th.theatre_id === selectedShow.theatre_id);
+
     navigate(`/movie/${id}/seats`, {
       state: {
         theatre_id: selectedShow.theatre_id,
         showtime: selectedShow.time,
         selectedDate,
+        theatreName: theatre?.name,
+        theatreAddr: theatre?.address + ", " + theatre?.city
       }
     });
   }

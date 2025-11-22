@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./order_summary_page.css";
 import { movies } from "../../data/movies";
+import Topbar from "../../components/TopBar/Topbar";
 
 export default function OrderSummary() {
     const navigate = useNavigate();
@@ -92,80 +93,7 @@ export default function OrderSummary() {
 
     return (
         <div className="os-root">
-            <header className="topbar">
-                <button
-                    className="brand clicky"
-                    onClick={() => navigate("/")}
-                    title="Back to home"
-                >
-                    <span className="logo">
-                        CIN<span>&</span>HUB
-                    </span>
-                </button>
-
-                <div className="topbar-spacer" />
-
-                <div className="user-wrap">
-                    <button className="link" onClick={handleLogout}>
-                        Logout
-                    </button>
-
-                    <button
-                        ref={userBtnRef}
-                        className="avatar-btn"
-                        aria-haspopup="menu"
-                        aria-expanded={userMenuOpen}
-                        onClick={() => setUserMenuOpen((v) => !v)}
-                        title="Account menu"
-                    >
-                        <img
-                            src={user.photo}
-                            alt={user.name}
-                            className="avatar-img"
-                            draggable="false"
-                        />
-                    </button>
-
-                    {userMenuOpen && (
-                        <div
-                            ref={userMenuRef}
-                            className="user-menu"
-                            role="menu"
-                            aria-label="Account"
-                        >
-                            <div className="user-menu__header">
-                                <img
-                                    src={user.photo}
-                                    alt={user.name}
-                                    className="avatar avatar--sm"
-                                />
-                                <div>
-                                    <div className="um-name">{user.name}</div>
-                                    <div className="um-email">{user.email}</div>
-                                </div>
-                            </div>
-                            <button
-                                className="menu-item"
-                                role="menuitem"
-                                onClick={() => navigate("/order-history")}
-                            >
-                                Order history
-                            </button>
-                            <button className="menu-item" role="menuitem">
-                                Account settings
-                            </button>
-                            <div className="menu-sep" />
-                            <button
-                                className="menu-item danger"
-                                role="menuitem"
-                                onClick={handleLogout}
-                            >
-                                Sign out
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </header>
+            <Topbar showUser={true} showBack={true} />
 
             <main className="os-page">
                 <header className="os-header">

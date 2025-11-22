@@ -29,9 +29,9 @@ const DATE_OPTIONS = [
 ];
 
 export default function SeatSelection() {
-    const navigate = useNavigate();
-    const { movieId } = useParams();
-    const location = useLocation();
+  const navigate = useNavigate();
+  const { movieId } = useParams();
+  const location = useLocation();
 
     const [user] = useState({
         name: "Aarav Patel",
@@ -43,19 +43,20 @@ export default function SeatSelection() {
     const userBtnRef = useRef(null);
     const userMenuRef = useRef(null);
 
-    const passed = location.state ?? {};
-    const [activeTime, setActiveTime] = useState(passed.showtime || "20:05");
-    const [activeDateId, setActiveDateId] = useState(
-        typeof passed.dateId === "number" ? passed.dateId : 1
-    );
+  const passed = location.state ?? {};
 
-    const [selectedSeats, setSelectedSeats] = useState([]);
+  // ----------- READ VALUES FROM STATE -----------
+  const selectedDate = passed.selectedDate;          // string e.g. "2025-12-01"
+  const activeTime = passed.showtime;                // time string e.g. "21:15"
+  const theatreName = passed.theatreName || "";
+  const theatreAddr = passed.theatreAddr || "";
 
-    const movie = useMemo(() => {
-        return movies.find((m) => String(m.id) === String(movieId)) || movies[0];
-    }, [movieId]);
+  const [selectedSeats, setSelectedSeats] = useState([]);
 
-    const activeDate = DATE_OPTIONS.find((d) => d.id === activeDateId);
+  const movie = useMemo(() => {
+    return movies.find((m) => String(m.id) === String(movieId)) || movies[0];
+  }, [movieId]);
+
 
     const totalPrice = useMemo(
         () => selectedSeats.length * PRICE_PER_TICKET,
@@ -96,132 +97,144 @@ export default function SeatSelection() {
         navigate("/login");
     }
 
-    function toggleSeat(seatId) {
-        if (BLOCKED_SEATS.has(seatId)) return;
+  function toggleSeat(seatId) {
+    if (BLOCKED_SEATS.has(seatId)) return;
 
-        setSelectedSeats((prev) =>
-            prev.includes(seatId)
-                ? prev.filter((s) => s !== seatId)
-                : [...prev, seatId]
-        );
-    }
-
-    function handleProceed() {
-        if (!selectedSeats.length) return;
-
-        navigate("/order-summary", {
-            state: {
-                movieId: movie.id,
-                showtime: activeTime,
-                dateLabel: activeDate?.label || "",
-                seats: selectedSeats,
-                pricePerTicket: PRICE_PER_TICKET,
-                total: totalPrice,
-                cinemaName: "CineHub Dublin Central",
-            },
-        });
-    }
-
-    return (
-        <div className="seat-root">
-            <Topbar showUser={true} showBack={true} />
-
-            <div className="seat-page">
-                <main className="seat-layout">
-                    <section className="seat-map-card">
-                        <div className="screen-bar">    </div>
-                        <div className="seat-grid">
-                            <div className="seat-cell seat-cell--empty" />
-                            {Array.from({ length: SEATS_PER_ROW }, (_, idx) => (
-                                <div key={`col-${idx + 1}`} className="seat-col-label">
-                                    {idx + 1}
-                                </div>
-                            ))}
-
-                            {ROWS.map((row) => (
-                                <React.Fragment key={row}>
-                                    <div className="seat-row-label">{row}</div>
-                                    {Array.from({ length: SEATS_PER_ROW }, (_, idx) => {
-                                        const seatId = `${row}${idx + 1}`;
-                                        const isBlocked = BLOCKED_SEATS.has(seatId);
-                                        const isSelected = selectedSeats.includes(seatId);
-                                        let cls = "seat";
-                                        if (isBlocked) cls += " seat--blocked";
-                                        if (isSelected) cls += " seat--selected";
-
-                                        return (
-                                            <button
-                                                key={seatId}
-                                                className={cls}
-                                                onClick={() => toggleSeat(seatId)}
-                                                disabled={isBlocked}
-                                                type="button"
-                                            />
-                                        );
-                                    })}
-                                </React.Fragment>
-                            ))}
-                        </div>
-
-                        <div className="seat-legend">
-                            <div className="seat-legend-item">
-                                <span className="legend-box legend-box--available" /> Available
-                            </div>
-                            <div className="seat-legend-item">
-                                <span className="legend-box legend-box--selected" /> Selected
-                            </div>
-                            <div className="seat-legend-item">
-                                <span className="legend-box legend-box--blocked" /> Unavailable
-                            </div>
-                        </div>
-                    </section>
-
-                    <aside className="order-card">
-                        <h2 className="order-title">Order Summary</h2>
-
-                        <div className="order-row">
-                            <span className="order-label">Movie:</span>
-                            <span className="order-value">{movie.title}</span>
-                        </div>
-
-                        <div className="order-row">
-                            <span className="order-label">Showtime:</span>
-                            <span className="order-value">
-                                {activeDate?.label || "Wed, Oct 8"} • {activeTime}
-                            </span>
-                        </div>
-
-                        <div className="order-row">
-                            <span className="order-label">Seats:</span>
-                            <span className="order-value">
-                                {selectedSeats.length
-                                    ? selectedSeats.join(", ")
-                                    : "No seats selected"}
-                            </span>
-                        </div>
-
-                        <div className="order-row">
-                            <span className="order-label">Tickets:</span>
-                            <span className="order-value">
-                                {selectedSeats.length} × €{PRICE_PER_TICKET.toFixed(2)}
-                            </span>
-                        </div>
-
-                        <div className="order-total-row">
-                            <span className="order-label">Total:</span>
-                            <span className="order-total">€{totalPrice.toFixed(2)}</span>
-                        </div>
-
-                        <button
-                            className="btn primary order-proceed-btn"
-                            onClick={handleProceed}
-                            disabled={!selectedSeats.length}
-                        >
-                            Proceed
-                        </button>
-                    </aside>
-                </main>
-            </div>
-        </div>
+    setSelectedSeats((prev) =>
+      prev.includes(seatId)
+        ? prev.filter((s) => s !== seatId)
+        : [...prev, seatId]
     );
+  }
+
+  function formatDate(d) {
+    if (!d) return "";
+    const [year, month, day] = d.split("-");
+    return `${day}-${month}-${year}`;
+  }
+
+  function handleProceed() {
+    if (!selectedSeats.length) return;
+
+    navigate("/order-summary", {
+      state: {
+        movieId: movie.id,
+        showtime: activeTime,
+        dateLabel: formatDate(selectedDate),
+        seats: selectedSeats,
+        pricePerTicket: PRICE_PER_TICKET,
+        total: totalPrice,
+        cinemaName: `${theatreName}${theatreAddr ? ", " + theatreAddr : ""}`,
+      },
+    });
+  }
+
+  return (
+    <div className="seat-root">
+      <Topbar showUser={true} showBack={true} />
+
+      <div className="seat-page">
+        <main className="seat-layout">
+          <section className="seat-map-card">
+                        <div className="screen-bar">    </div>
+            <div className="seat-grid">
+              <div className="seat-cell seat-cell--empty" />
+              {Array.from({ length: SEATS_PER_ROW }, (_, idx) => (
+                <div key={`col-${idx + 1}`} className="seat-col-label">
+                  {idx + 1}
+                </div>
+              ))}
+
+              {ROWS.map((row) => (
+                <React.Fragment key={row}>
+                  <div className="seat-row-label">{row}</div>
+                  {Array.from({ length: SEATS_PER_ROW }, (_, idx) => {
+                    const seatId = `${row}${idx + 1}`;
+                    const isBlocked = BLOCKED_SEATS.has(seatId);
+                    const isSelected = selectedSeats.includes(seatId);
+                    let cls = "seat";
+                    if (isBlocked) cls += " seat--blocked";
+                    if (isSelected) cls += " seat--selected";
+
+                    return (
+                      <button
+                        key={seatId}
+                        className={cls}
+                        onClick={() => toggleSeat(seatId)}
+                        disabled={isBlocked}
+                        type="button"
+                      />
+                    );
+                  })}
+                </React.Fragment>
+              ))}
+            </div>
+
+            <div className="seat-legend">
+              <div className="seat-legend-item">
+                <span className="legend-box legend-box--available" /> Available
+              </div>
+              <div className="seat-legend-item">
+                <span className="legend-box legend-box--selected" /> Selected
+              </div>
+              <div className="seat-legend-item">
+                <span className="legend-box legend-box--blocked" /> Unavailable
+              </div>
+            </div>
+          </section>
+
+          <aside className="order-card">
+            <h2 className="order-title">Order Summary</h2>
+
+            <div className="order-row">
+              <span className="order-label">Movie:</span>
+              <span className="order-value">{movie.title}</span>
+            </div>
+
+            <div className="order-row">
+              <span className="order-label">Theatre:</span>
+              <span className="order-value">
+                {theatreName || "Not selected"}
+                {theatreAddr ? ` • ${theatreAddr}` : ""}
+              </span>
+            </div>
+
+            <div className="order-row">
+              <span className="order-label">Showtime:</span>
+              <span className="order-value">
+                {formatDate(selectedDate)} • {activeTime}
+              </span>
+            </div>
+
+            <div className="order-row">
+              <span className="order-label">Seats:</span>
+              <span className="order-value">
+                {selectedSeats.length ? selectedSeats.join(", ") : "No seats selected"}
+              </span>
+            </div>
+
+            <div className="order-row">
+              <span className="order-label">Tickets:</span>
+              <span className="order-value">
+                {selectedSeats.length} × €{PRICE_PER_TICKET.toFixed(2)}
+              </span>
+            </div>
+
+            <div className="order-total-row">
+              <span className="order-label">Total:</span>
+              <span className="order-total">€{totalPrice.toFixed(2)}</span>
+            </div>
+
+            <button
+              className="btn primary order-proceed-btn"
+              onClick={handleProceed}
+              disabled={!selectedSeats.length}
+            >
+              Proceed
+            </button>
+          </aside>
+        </main>
+      </div>
+    </div>
+  );
 }
