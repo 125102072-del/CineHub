@@ -85,7 +85,21 @@ export default function OrderSummary() {
     }
 
     function handleProceedPayment() {
+        if (!seats.length) return;
+
         alert("Proceeding to payment gateway…");
+        navigate("/order-confirmation", {
+            state: {
+                movieId,
+                movieName: movie.title,
+                showtime,
+                dateLabel,
+                seats,
+                pricePerTicket,
+                total: finalTotal,
+                cinemaName,
+            },
+        });
     }
 
     const ticketsCount = seats.length;

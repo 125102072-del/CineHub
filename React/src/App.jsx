@@ -7,6 +7,7 @@ import MovieDetailPage from "./pages/Movie_Detail/movies_detail_page.jsx";
 import OrderHistoryPage from "./pages/Order_History/order_history_page.jsx";
 import SeatSelection from "./pages/Seat_Selection/seat_selection_page.jsx";
 import OrderSummary from "./pages/OrderSummary/order_summary_page.jsx";
+import OrderConfirmation from "./pages/OrderConfirmation/order_confirmation_page.jsx";
 
 
 
@@ -26,6 +27,8 @@ export default function App() {
       <Route path="/movie/:movieId/seats" element={<SeatSelection />} />
       <Route path="/movie/:movieId/seats" element={<SeatSelection />} />
       <Route path="/order-summary" element={<OrderSummary />} />
+      <Route path="/order-confirmation" element={<OrderConfirmation />} />
+
 
     </Routes>
   );
