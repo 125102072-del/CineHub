@@ -12,7 +12,8 @@ export default function MovieDetailPage() {
   const [theatresData, setTheatresData] = useState([]);
   const [loadingTheatres, setLoadingTheatres] = useState(true);
 
-  const movieTimes = movie?.times ?? [];
+  const [selectedShow, setSelectedShow] = useState(null);
+
   const movieGenres = movie?.genre ?? [];
   const ticketTags = ["IMAX", "Dolby", ...(movie?.tag ?? [])];
 
@@ -28,10 +29,7 @@ export default function MovieDetailPage() {
   });
 
   const [selectedDate, setSelectedDate] = useState(dateOptions[1]?.key ?? "");
-  const [selectedShow, setSelectedShow] = useState(null); // updated
-
   const theatres = theatresData;
-
 
   useEffect(() => {
     async function fetchMovie() {
@@ -53,18 +51,16 @@ export default function MovieDetailPage() {
       try {
         setLoadingTheatres(true);
 
-        // Format yyyy-mm-dd -> dd-mm-yyyy for backend
         const dd = selectedDate.slice(8, 10);
         const mm = selectedDate.slice(5, 7);
         const yyyy = selectedDate.slice(0, 4);
         const formattedDate = `${dd}-${mm}-${yyyy}`;
 
-        const res = await fetch(
-          `http://localhost:8000/theatres/${id}?show_date=${formattedDate}`
-        );
+        const res = await fetch(`http://localhost:8000/theatres/${id}?show_date=${formattedDate}`);
         const json = await res.json();
         setTheatresData(json.data || []);
-        setSelectedShow(null); // reset selected show when date changes
+        setSelectedShow(null); // reset when date changes
+
       } catch (err) {
         console.error("Error loading theatres", err);
         setTheatresData([]);
@@ -81,8 +77,9 @@ export default function MovieDetailPage() {
 
     navigate(`/movie/${id}/seats`, {
       state: {
-        showtime: selectedShow,      // selected time
-        selectedDate                 // chosen date
+        theatre_id: selectedShow.theatre_id,
+        showtime: selectedShow.time,
+        selectedDate,
       }
     });
   }
@@ -162,8 +159,16 @@ export default function MovieDetailPage() {
                         st.start_time.map((slot) => (
                           <button
                             key={`${t.theatre_id}-${st.showtime_id}-${slot}`}
-                            className={`slot ${selectedShow === slot ? "active" : ""}`}
-                            onClick={() => setSelectedShow(slot)}
+                            className={`slot ${
+                              selectedShow?.theatre_id === t.theatre_id &&
+                              selectedShow?.time === slot
+                                ? "active"
+                                : ""
+                            }`}
+                            onClick={() => setSelectedShow({
+                              theatre_id: t.theatre_id,
+                              time: slot
+                            })}
                           >
                             {slot}
                           </button>
@@ -180,7 +185,6 @@ export default function MovieDetailPage() {
               </div>
             )}
           </section>
-
 
           <footer className="md-footer">
             <button
