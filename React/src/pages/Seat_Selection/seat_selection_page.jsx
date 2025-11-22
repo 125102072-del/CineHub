@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./seat_selection_page.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { movies } from "../../data/movies";
+import Topbar from "../../components/TopBar/Topbar";
+
 
 const ROWS = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
 const SEATS_PER_ROW = 11;
@@ -122,80 +124,7 @@ export default function SeatSelection() {
 
     return (
         <div className="seat-root">
-            <header className="topbar">
-                <button
-                    className="brand clicky"
-                    onClick={handleLogoClick}
-                    title="Back to home"
-                >
-                    <span className="logo">
-                        CIN<span>&</span>HUB
-                    </span>
-                </button>
-
-                <div className="topbar-spacer" />
-
-                <div className="user-wrap">
-                    <button className="link" onClick={handleLogout}>
-                        Logout
-                    </button>
-
-                    <button
-                        ref={userBtnRef}
-                        className="avatar-btn"
-                        aria-haspopup="menu"
-                        aria-expanded={userMenuOpen}
-                        onClick={() => setUserMenuOpen((v) => !v)}
-                        title="Account menu"
-                    >
-                        <img
-                            src={user.photo}
-                            alt={user.name}
-                            className="avatar-img"
-                            draggable="false"
-                        />
-                    </button>
-
-                    {userMenuOpen && (
-                        <div
-                            ref={userMenuRef}
-                            className="user-menu"
-                            role="menu"
-                            aria-label="Account"
-                        >
-                            <div className="user-menu__header">
-                                <img
-                                    src={user.photo}
-                                    alt={user.name}
-                                    className="avatar avatar--sm"
-                                />
-                                <div>
-                                    <div className="um-name">{user.name}</div>
-                                    <div className="um-email">{user.email}</div>
-                                </div>
-                            </div>
-                            <button
-                                className="menu-item"
-                                role="menuitem"
-                                onClick={() => navigate("/order-history")}
-                            >
-                                Order history
-                            </button>
-                            <button className="menu-item" role="menuitem">
-                                Account settings
-                            </button>
-                            <div className="menu-sep" />
-                            <button
-                                className="menu-item danger"
-                                role="menuitem"
-                                onClick={handleLogout}
-                            >
-                                Sign out
-                            </button>
-                        </div>
-                    )}
-                </div>
-            </header>
+            <Topbar showUser={true} showBack={true} />
 
             <div className="seat-page">
                 <main className="seat-layout">

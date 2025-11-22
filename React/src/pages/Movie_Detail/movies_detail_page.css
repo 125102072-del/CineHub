@@ -287,11 +287,10 @@
 
 .md-footer {
     position: sticky;
-    bottom: 0;
+    bottom: 2rem;
     display: flex;
     justify-content: flex-end;
     padding: 14px 20px;
-    backdrop-filter: blur(6px);
 }
 
 .btn.cta {

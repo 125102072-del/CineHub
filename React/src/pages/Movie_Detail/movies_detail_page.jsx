@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import "./movies_detail_page.css";
+import Topbar from "../../components/TopBar/Topbar";
 
 export default function MovieDetailPage() {
   const { id } = useParams();
@@ -97,15 +98,7 @@ export default function MovieDetailPage() {
         </div>
       ) : (
         <>
-          <header className="md-topbar">
-            <button className="back-btn" onClick={() => navigate(-1)}>‹</button>
-            <div className="brand-mini">CINE<span>&</span>HUB</div>
-            <div className="user-mini">
-              <button className="link">Logout</button>
-              <span className="avatar tiny" />
-            </div>
-          </header>
-
+          <Topbar showUser={true} showBack={true} />
           <section className="md-hero">
             <div className="md-card">
               <div className="md-left">
