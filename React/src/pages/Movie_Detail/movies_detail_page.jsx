@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import "./movies_detail_page.css";
 import Topbar from "../../components/TopBar/Topbar";
+import Chatbot from "../../components/ChatBot/chatbot";
+import ChatFab from "../../components/ChatBot/ChatFab";
 
 export default function MovieDetailPage() {
   const { id } = useParams();
@@ -11,6 +13,7 @@ export default function MovieDetailPage() {
   const [loading, setLoading] = useState(true);
   const [theatresData, setTheatresData] = useState([]);
   const [loadingTheatres, setLoadingTheatres] = useState(true);
+  const [chatOpen, setChatOpen] = useState(false);
 
   const [selectedShow, setSelectedShow] = useState(null);
 
@@ -189,6 +192,8 @@ export default function MovieDetailPage() {
               </div>
             )}
           </section>
+          <Chatbot chatOpen={chatOpen} />
+          <ChatFab chatOpen={chatOpen} setChatOpen={setChatOpen} />
 
           <footer className="md-footer">
             <button
