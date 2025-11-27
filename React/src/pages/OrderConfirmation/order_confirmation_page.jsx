@@ -1,13 +1,12 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Topbar from "../../components/TopBar/Topbar"; // ✅ reuse your Topbar
+import Topbar from "../../components/TopBar/Topbar"; // 
 import "./order_confirmation_page.css";
 
 export default function OrderConfirmationPage() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Data sent from OrderSummary via navigate("/order-confirmation", { state: {...} })
     const state = location.state || {};
 
     const {
@@ -28,14 +27,12 @@ export default function OrderConfirmationPage() {
     const finalTotal =
         typeof total === "number" ? total : ticketsCount * pricePerTicket;
 
-    // Nice readable strings
     const seatLabel = seats.length ? seats.join(", ") : "—";
 
     function handleBackToMain() {
-        navigate("/home"); // or "/" depending on your app
+        navigate("/home"); // 
     }
 
-    // If someone lands here directly without state, show a fallback
     if (!showtime || !dateLabel || !ticketsCount) {
         return (
             <div className="confirm-root">
@@ -62,13 +59,11 @@ export default function OrderConfirmationPage() {
     }
 
     return (
-        <div className="confirm-root">
-            {/* 🔥 This gives you CineHub left + Logout + avatar right */}
-            <Topbar showUser={true} showBack={false} />
+        <div className="md-root">
+            <Topbar showUser={true} showBack={true} />
 
             <main className="confirm-container">
                 <section className="confirm-card">
-                    {/* HEADER */}
                     <div className="confirm-header">
                         <div className="confirm-icon">✔</div>
                         <div>
@@ -77,9 +72,7 @@ export default function OrderConfirmationPage() {
                         </div>
                     </div>
 
-                    {/* BODY */}
                     <div className="confirm-body">
-                        {/* LEFT SIDE – basic booking details */}
                         <div className="confirm-details-left">
                             <h2 className="confirm-movie">{movieName}</h2>
                             <p className="confirm-theatre">{cinemaName}</p>
@@ -91,7 +84,6 @@ export default function OrderConfirmationPage() {
                             </p>
                         </div>
 
-                        {/* RIGHT SIDE – price summary */}
                         <div className="confirm-details-right">
                             <div className="confirm-row">
                                 <span>Ticket price</span>
@@ -112,7 +104,6 @@ export default function OrderConfirmationPage() {
                         </div>
                     </div>
 
-                    {/* FOOTER BUTTON */}
                     <button
                         className="btn primary confirm-back-btn"
                         onClick={handleBackToMain}

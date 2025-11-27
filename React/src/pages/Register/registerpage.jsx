@@ -48,13 +48,6 @@ export default function Register() {
         } catch (error) {
             setErrMessage("Account with same email already exist");
         }
-
-       
-/*
-        const form = new FormData(e.currentTarget);
-        const data = Object.fromEntries(form.entries());
-        console.log("signup data:", data);
-*/
     
     }
 
