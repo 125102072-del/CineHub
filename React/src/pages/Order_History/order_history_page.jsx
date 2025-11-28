@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function OrderHistoryPage() {
     const navigate = useNavigate();
 
-    // Example past orders — replace later with real data from backend
     const orders = [
         {
             id: "ORD-2023-001",
@@ -31,7 +30,6 @@ export default function OrderHistoryPage() {
 
     return (
         <div className="oh-root">
-            {/* Topbar */}
             <header className="oh-topbar">
                 <button className="back-btn" onClick={() => navigate(-1)}>‹</button>
                 <div className="brand-mini">CINE<span>&</span>HUB</div>

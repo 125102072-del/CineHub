@@ -1,4 +1,5 @@
 const Customer = require("../models/Customer");
+const jwt = require("jsonwebtoken");
 
 const login = async (requestBody) => {
 
@@ -13,13 +14,19 @@ const login = async (requestBody) => {
     if (customer.password !== password) {
       throw new Error("Incorrect password");
     }
+    const token = jwt.sign(
+      { id: customer.customer_id, email: customer.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
     return {
       message: "Login successful",
+      token : token,
       data: {
         id: customer.customer_id,
         username: customer.username,
         email: customer.email,
-        phone_number: customer.phone_number
+        phone_number: customer.phone_number,
       }
     };
   };

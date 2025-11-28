@@ -1,0 +1,67 @@
+/* TOPBAR MAIN ROW */
+.topbar {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;   /* spread items */
+    padding: 10px 20px;
+    height: 60px;
+    z-index: 10;
+  }
+  
+  /* CENTER LOGO EXACTLY */
+  .brand.clicky {
+    font-size: 26px;
+    font-weight: 700;
+    color: #b5ceff;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  
+  /* Logo color highlight */
+  .logo span {
+    color: #8ac5ff;
+  }
+  
+  /* BACK BUTTON */
+  .back-btn {
+    background:none !important;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+  
+  /* USER + LOGOUT RIGHT SIDE */
+  .user-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+  
+  .link {
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .avatar-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .avatar-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .left-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
