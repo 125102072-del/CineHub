@@ -152,3 +152,7 @@ body {
 .msg.error {
     color: #f87171;
 }
+.logo-img{
+    display: flex;
+    margin: 0 auto;
+}
