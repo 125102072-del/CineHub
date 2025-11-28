@@ -47,7 +47,21 @@ export default function Register() {
 
         } catch (error) {
             setErrMessage("Account with same email already exist");
+
         }
+
+        setUsername("");
+        setPhoneNumber("");
+        setAge("");
+        setEmail("");
+        setPassword("");
+
+       
+/*
+        const form = new FormData(e.currentTarget);
+        const data = Object.fromEntries(form.entries());
+        console.log("signup data:", data);
+*/
     
     }
 
@@ -65,7 +79,7 @@ export default function Register() {
                             <input 
                             name="firstName" 
                             type="text" 
-                            placeholder="Jane Doe" 
+                            placeholder="Ex: Jane Doe" 
                              value = {username}
                             onChange={(e) => setUsername(e.target.value)}
                             required 
@@ -77,7 +91,7 @@ export default function Register() {
                             <input 
                             name="Phone Number" 
                             type="number" 
-                            placeholder="+353765645367" 
+                            placeholder="Ex: +353765645367" 
                            value = {phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                             required 
@@ -90,7 +104,7 @@ export default function Register() {
                             name="age" 
                             type="number" 
                             min="0" 
-                            placeholder="18" 
+                            placeholder="Ex: 18" 
                            value = {age}
                             onChange={(e) => setAge(e.target.value)}
                             required 
@@ -102,7 +116,7 @@ export default function Register() {
                             <input 
                             name="email" 
                             type="email" 
-                            placeholder="you@example.com" 
+                            placeholder="Ex: you@example.com" 
                            value = {email}
                             onChange={(e) => setEmail(e.target.value)}
                             required 
