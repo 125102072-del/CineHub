@@ -1,12 +1,13 @@
 {
   "dependencies": {
+    "@aws-sdk/client-lex-runtime-v2": "^3.600.0",
+    "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "body-parser": "^1.20.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.20.0",
-    "nodemon": "^3.1.10",
-    "@aws-sdk/client-lex-runtime-v2": "^3.600.0"
+    "nodemon": "^3.1.10"
   },
   "name": "cinehub",
   "version": "1.0.0",

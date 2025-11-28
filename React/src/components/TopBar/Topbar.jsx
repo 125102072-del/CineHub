@@ -38,6 +38,17 @@ export default function Topbar({ showUser = true, showBack = false }) {
     };
   }, [userMenuOpen]);
 
+  function handleLogout() {
+    localStorage.removeItem("token");
+  
+    navigate("/login", { replace: true });
+  
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", () => {
+      navigate("/login", { replace: true });
+    });
+  }
+
   return (
     <header className="topbar">
         <div className="left-group">
@@ -57,7 +68,7 @@ export default function Topbar({ showUser = true, showBack = false }) {
 
         {showUser && (
         <div className="user-wrap">
-            <button className="link" onClick={() => navigate("/login")}>
+            <button className="link" onClick={handleLogout}>
             Logout
             </button>
             <button

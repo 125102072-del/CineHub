@@ -37,7 +37,10 @@ export default function MovieDetailPage() {
   useEffect(() => {
     async function fetchMovie() {
       try {
-        const res = await fetch(`http://localhost:8000/movies/${id}`);
+        const res = await fetch(`http://localhost:8000/movies/${id}` , {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          }});
         const json = await res.json();
         setMovie(json.data || null);
       } catch (err) {
@@ -59,7 +62,10 @@ export default function MovieDetailPage() {
         const yyyy = selectedDate.slice(0, 4);
         const formattedDate = `${dd}-${mm}-${yyyy}`;
 
-        const res = await fetch(`http://localhost:8000/theatres/${id}?show_date=${formattedDate}`);
+        const res = await fetch(`http://localhost:8000/theatres/${id}?show_date=${formattedDate}` , {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          }});
         const json = await res.json();
         setTheatresData(json.data || []);
         setSelectedShow(null); // reset when date changes
@@ -79,9 +85,11 @@ export default function MovieDetailPage() {
     if (!selectedShow) return;
 
     const theatre = theatresData.find(th => th.theatre_id === selectedShow.theatre_id);
+    console.log(movie);
 
     navigate(`/movie/${id}/seats`, {
       state: {
+        movie : movie,
         theatre_id: selectedShow.theatre_id,
         showtime: selectedShow.time,
         selectedDate,
