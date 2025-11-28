@@ -26,7 +26,10 @@ export default function Home() {
   useEffect(() => {
     async function fetchMovies() {
       try {
-        const res = await fetch("http://localhost:8000/movies");
+        const res = await fetch("http://localhost:8000/movies" , {
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token"),
+          }});
         const result = await res.json();
         setMovies(result.data);  // store only data field
       } catch (error) {

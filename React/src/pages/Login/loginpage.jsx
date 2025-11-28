@@ -8,6 +8,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
 
+
   async function handleSubmit(e) {
     e.preventDefault();
     setMsg("");
@@ -23,7 +24,7 @@ export default function Login() {
   
       if (response.ok) {
         setMsg("Login successful!");
-        localStorage.setItem("user", JSON.stringify(result.data));
+        localStorage.setItem("token", result.token);
         navigate("/home");
       } else {
         setMsg(result.error);

@@ -9,7 +9,6 @@ export default function OrdersPage() {
     }}>
       <h2 style={{ fontWeight: 800, marginBottom: "16px" }}>🎟️ Order History</h2>
       <p>You currently have no past orders.</p>
-      {/* Later you can map a list of orders here */}
     </div>
   );
 }

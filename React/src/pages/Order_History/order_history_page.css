@@ -87,13 +87,11 @@
     padding: 20px;
     font-family: Inter, sans-serif;
 
-    /* 🔥 Local Background Image */
     background-image: url("../../assets/images/Background_img.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
-    /* Optional dark overlay for readability */
     background-color: rgba(0, 0, 0, 0.55);
     background-blend-mode: multiply;
     color: white;

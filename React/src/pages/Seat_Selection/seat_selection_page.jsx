@@ -44,18 +44,14 @@ export default function SeatSelection() {
     const userMenuRef = useRef(null);
 
   const passed = location.state ?? {};
+  const movie = passed.movie;
 
-  // ----------- READ VALUES FROM STATE -----------
-  const selectedDate = passed.selectedDate;          // string e.g. "2025-12-01"
-  const activeTime = passed.showtime;                // time string e.g. "21:15"
+  const selectedDate = passed.selectedDate;       
+  const activeTime = passed.showtime;
   const theatreName = passed.theatreName || "";
   const theatreAddr = passed.theatreAddr || "";
 
   const [selectedSeats, setSelectedSeats] = useState([]);
-
-  const movie = useMemo(() => {
-    return movies.find((m) => String(m.id) === String(movieId)) || movies[0];
-  }, [movieId]);
 
 
     const totalPrice = useMemo(
@@ -116,9 +112,12 @@ export default function SeatSelection() {
   function handleProceed() {
     if (!selectedSeats.length) return;
 
+    console.log(movie);
+
     navigate("/order-summary", {
       state: {
-        movieId: movie.id,
+        movieId: movie.movie_id,
+        movie : movie,
         showtime: activeTime,
         dateLabel: formatDate(selectedDate),
         seats: selectedSeats,
@@ -188,7 +187,7 @@ export default function SeatSelection() {
 
             <div className="order-row">
               <span className="order-label">Movie:</span>
-              <span className="order-value">{movie.title}</span>
+              <span className="order-value">{movie.name}</span>
             </div>
 
             <div className="order-row">

@@ -19,17 +19,6 @@ export default function OrderSummary() {
         cinemaName = "CineHub Dublin Central",
     } = state;
 
-    useEffect(() => {
-        if (!movieId || !showtime || !dateLabel || !seats.length) {
-            navigate("/", { replace: true });
-        }
-    }, [movieId, showtime, dateLabel, seats, navigate]);
-
-    const movie = useMemo(
-        () => movies.find((m) => String(m.id) === String(movieId)) ?? movies[0],
-        [movieId]
-    );
-
     const [user] = useState({
         name: "Aarav Patel",
         email: "aarav.patel@example.com",
@@ -38,6 +27,8 @@ export default function OrderSummary() {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const userBtnRef = useRef(null);
     const userMenuRef = useRef(null);
+    const passed = location.state ?? {};
+    const movie = passed.movie;
 
     useEffect(() => {
         function onDocClick(e) {
@@ -74,18 +65,32 @@ export default function OrderSummary() {
 
         navigate(`/movie/${movieId}/seats`, {
             state: {
+              movie,
+              selectedDate: state.selectedDate,
+              showtime,
+              seats,
+              pricePerTicket,
+              total,
+              cinemaName,
+            },
+          });
+    }
+
+    function handleProceedPayment() {
+        if (!seats.length) return;
+        console.log(movieId +" " +movie.name)
+        navigate("/order-confirmation", {
+            state: {
+                movieId,
+                movieName: movie.name,
                 showtime,
                 dateLabel,
                 seats,
                 pricePerTicket,
-                total,
+                total: finalTotal,
                 cinemaName,
             },
         });
-    }
-
-    function handleProceedPayment() {
-        alert("Proceeding to payment gateway…");
     }
 
     const ticketsCount = seats.length;
@@ -105,10 +110,10 @@ export default function OrderSummary() {
 
                 <section className="os-grid">
                     <div className="os-card order-card">
-                        <h2 className="order-movie-title">{movie.title}</h2>
+                        <h2 className="order-movie-title">{movie.name}</h2>
                         <p className="order-movie-meta">
                             PG-13 • {movie.duration ?? "132m"} •{" "}
-                            {(movie.genres ?? []).join(", ")} • {cinemaName}
+                            {(movie.genre ?? []).join(", ")} • {cinemaName}
                         </p>
 
                         <div className="order-section">

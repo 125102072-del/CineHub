@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "../../assets/cinehub-logo.png";
+import { useNavigate } from "react-router-dom";
 import "./NavBar.css"
 
 
@@ -15,6 +16,7 @@ export default function Navbar({
     const [userMenuOpen, setUserMenuOpen] = useState(false);
     const userBtnRef = useRef(null);
     const userMenuRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         function onDocClick(e) {
@@ -38,6 +40,17 @@ export default function Navbar({
             document.removeEventListener("keydown", onKey);
         };
     }, [userMenuOpen]);
+
+    function handleLogout() {
+        localStorage.removeItem("token");
+      
+        navigate("/login", { replace: true });
+      
+        window.history.pushState(null, "", window.location.href);
+        window.addEventListener("popstate", () => {
+          navigate("/login", { replace: true });
+        });
+      }
 
     return (
         <header className="topbar">
@@ -73,7 +86,7 @@ export default function Navbar({
             </div>
 
             <div className="user-wrap">
-                <button type="button" className="link">
+                <button type="button" onClick={handleLogout} className="link">
                     Logout
                 </button>
 
