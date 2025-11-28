@@ -1,6 +1,7 @@
 import "./registerpage.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import logo from "../../assets/cinehub-logo.png";
 
 export default function Register() {
 
@@ -71,7 +72,7 @@ export default function Register() {
         <div className="page-wrapper">
             <div className="login-container">
                 <div className="login-card">
-                    <h2 className="login-title">Create your account</h2>
+                    <img src={logo} alt="CINEHUB Logo" className="logo-img" />
 
                     <form onSubmit={handleSubmit}>
                         <div className="field">

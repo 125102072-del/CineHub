@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./loginpage.css";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../../assets/cinehub-logo.png";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function Login() {
     <div className="page-wrapper">
       <div className="login-container">
         <div className="login-card">
-          <h2 className="login-title">Login to CineHub</h2>
+        <img src={logo} alt="CINEHUB Logo" className="logo-img" />
 
           <form onSubmit={handleSubmit}>
             <div className="field">
